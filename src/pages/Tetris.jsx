@@ -6,34 +6,13 @@ const ROWS = 20
 const CELL_SIZE = 24
 
 const TETROMINOES = {
-  I: {
-    shape: [[1, 1, 1, 1]],
-    color: 'bg-cyan-500'
-  },
-  O: {
-    shape: [[1, 1], [1, 1]],
-    color: 'bg-yellow-500'
-  },
-  T: {
-    shape: [[0, 1, 0], [1, 1, 1]],
-    color: 'bg-purple-500'
-  },
-  S: {
-    shape: [[0, 1, 1], [1, 1, 0]],
-    color: 'bg-green-500'
-  },
-  Z: {
-    shape: [[1, 1, 0], [0, 1, 1]],
-    color: 'bg-red-500'
-  },
-  J: {
-    shape: [[1, 0, 0], [1, 1, 1]],
-    color: 'bg-blue-500'
-  },
-  L: {
-    shape: [[0, 0, 1], [1, 1, 1]],
-    color: 'bg-orange-500'
-  }
+  I: { shape: [[1, 1, 1, 1]], color: 'bg-cyan-500' },
+  O: { shape: [[1, 1], [1, 1]], color: 'bg-yellow-500' },
+  T: { shape: [[0, 1, 0], [1, 1, 1]], color: 'bg-purple-500' },
+  S: { shape: [[0, 1, 1], [1, 1, 0]], color: 'bg-green-500' },
+  Z: { shape: [[1, 1, 0], [0, 1, 1]], color: 'bg-red-500' },
+  J: { shape: [[1, 0, 0], [1, 1, 1]], color: 'bg-blue-500' },
+  L: { shape: [[0, 0, 1], [1, 1, 1]], color: 'bg-orange-500' }
 }
 
 const TETRO_KEYS = Object.keys(TETROMINOES)
@@ -62,6 +41,7 @@ function Tetris() {
   const positionRef = useRef(position)
   const isPlayingRef = useRef(isPlaying)
   const isPausedRef = useRef(isPaused)
+  const gameLoopRef = useRef(null)
 
   useEffect(() => { boardRef.current = board }, [board])
   useEffect(() => { currentPieceRef.current = currentPiece }, [currentPiece])
@@ -80,7 +60,6 @@ function Tetris() {
         if (piece.shape[r][c]) {
           const newX = pos.x + c
           const newY = pos.y + r
-
           if (newX < 0 || newX >= COLS || newY >= ROWS) return false
           if (newY >= 0 && boardState[newY][newX]) return false
         }
@@ -120,7 +99,6 @@ function Tetris() {
       }
     }
 
-    // Check for completed lines
     let linesCleared = 0
     for (let r = ROWS - 1; r >= 0; r--) {
       if (newBoard[r].every(cell => cell !== null)) {
@@ -150,7 +128,6 @@ function Tetris() {
     setBoard(newBoard)
     boardRef.current = newBoard
 
-    // Spawn new piece
     const newPiece = getRandomTetromino()
     const startPos = { x: Math.floor((COLS - newPiece.shape[0].length) / 2), y: 0 }
 
@@ -313,7 +290,6 @@ function Tetris() {
   const renderBoard = () => {
     const displayBoard = board.map(row => [...row])
 
-    // Draw current piece
     if (currentPiece && isPlaying && !isPaused) {
       for (let r = 0; r < currentPiece.shape.length; r++) {
         for (let c = 0; c < currentPiece.shape[r].length; c++) {
@@ -371,7 +347,7 @@ function Tetris() {
           )}
 
           <div
-            className="relative border-4 border-gray-600 bg-gray-900"
+            className="relative border-4 border-gray-600 bg-gray-900 touch-none select-none"
             style={{
               width: COLS * CELL_SIZE,
               height: ROWS * CELL_SIZE
@@ -393,7 +369,49 @@ function Tetris() {
             )}
           </div>
 
-          <div className="flex gap-4 mt-6">
+          {/* Touch controls for mobile */}
+          <div className="flex flex-col items-center mt-4 gap-2">
+            <button
+              onTouchStart={rotate}
+              className="bg-purple-600 active:bg-purple-700 w-14 h-14 rounded-lg text-xl font-bold flex items-center justify-center"
+            >
+              ↻
+            </button>
+            <div className="flex gap-2">
+              <button
+                onTouchStart={moveLeft}
+                className="bg-blue-600 active:bg-blue-700 w-14 h-14 rounded-lg text-2xl font-bold flex items-center justify-center"
+              >
+                ←
+              </button>
+              <button
+                onTouchStart={moveDown}
+                className="bg-green-600 active:bg-green-700 w-14 h-14 rounded-lg text-2xl font-bold flex items-center justify-center"
+              >
+                ↓
+              </button>
+              <button
+                onTouchStart={moveRight}
+                className="bg-blue-600 active:bg-blue-700 w-14 h-14 rounded-lg text-2xl font-bold flex items-center justify-center"
+              >
+                →
+              </button>
+            </div>
+            <button
+              onTouchStart={hardDrop}
+              className="bg-red-600 active:bg-red-700 w-32 h-12 rounded-lg text-lg font-bold flex items-center justify-center"
+            >
+              DROP
+            </button>
+          </div>
+
+          <div className="flex gap-4 mt-4">
+            <button
+              onClick={() => setIsPaused(prev => !prev)}
+              className="bg-yellow-600 hover:bg-yellow-500 px-6 py-3 rounded-lg font-semibold transition-colors"
+            >
+              {isPaused ? 'Resume' : 'Pause'}
+            </button>
             <button
               onClick={startGame}
               className="bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-lg font-semibold transition-colors"

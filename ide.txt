@@ -60,3 +60,37 @@ Berikut rekomendasi stack dan game untuk kumpulan game berbasis website:
     4. Gunakan monorepo (misal Vite + workspace) agar semua game dalam 1 project
 
     Mau saya mulai bantu buatkan salah satu game-nya?
+
+
+
+
+
+
+Berdasarkan game yang sudah ada, beberapa ide yang bisa ditambahkan:
+
+    Puzzle:
+    - Wordle/Word Search - tebak kata
+    - Bejeweled/Candy Crush - match-3 puzzle
+    - Jigsaw Puzzle - geser pieces gambar
+
+    Arcade:
+    - Asteroids - spaceship menembak asteroid
+    - Pac-Man style - maze chase game
+    - Frogger - lindungi katak menyeberang jalan
+
+    Card/Board:
+    - Solitaire/Klondike - kartu solitaire
+    - UNO - kartu berwarna
+    - Ludo - board game dadu
+
+    Casual:
+    - Darts - lempar panah ke target
+    - Bowling - gelindingkan bola
+    - Basketball - lempar bola ke ring
+    - Whack-a-Mole - ketuk tikus yang muncul
+
+    Sports:
+    - Table Tennis - ping pong sederhana
+    - Mini Golf - golf 2D
+
+    Game mana yang kamu mau saya tambahkan?

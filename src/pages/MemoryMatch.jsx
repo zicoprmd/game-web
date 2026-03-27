@@ -62,14 +62,6 @@ function MemoryMatch() {
       })
       setFlippedIndices([])
       setIsLocked(false)
-
-      if (cards.every((card, idx) => idx === first || idx === second || card.isMatched)) {
-        setTimeout(() => {
-          if (cards.filter(c => !c.isMatched).length === 2) {
-            setIsPlaying(false)
-          }
-        }, 100)
-      }
     } else {
       setTimeout(() => {
         setCards(prev => prev.map((card, idx) =>
@@ -107,6 +99,9 @@ function MemoryMatch() {
       const finalScore = Math.max(score, highScore)
       setHighScore(finalScore)
       localStorage.setItem('memoryMatchHighScore', finalScore.toString())
+      setTimeout(() => {
+        setIsPlaying(false)
+      }, 500)
     }
   }, [isGameWon, score, highScore, isPlaying])
 

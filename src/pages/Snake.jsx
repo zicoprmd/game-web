@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 const GRID_SIZE = 20
 const CELL_SIZE = 20
+const CANVAS_SIZE = GRID_SIZE * CELL_SIZE
 const INITIAL_SPEED = 150
 
 function Snake() {
@@ -20,14 +21,10 @@ function Snake() {
   const directionRef = useRef({ x: 0, y: 0 })
   const foodRef = useRef(food)
   const isPausedRef = useRef(isPaused)
+  const gameLoopRef = useRef(null)
 
-  useEffect(() => {
-    foodRef.current = food
-  }, [food])
-
-  useEffect(() => {
-    isPausedRef.current = isPaused
-  }, [isPaused])
+  useEffect(() => { foodRef.current = food }, [food])
+  useEffect(() => { isPausedRef.current = isPaused }, [isPaused])
 
   const generateFood = useCallback((currentSnake) => {
     let newFood
@@ -100,7 +97,6 @@ function Snake() {
       setSnake(prevSnake => {
         const direction = directionRef.current
 
-        // Skip if no direction set yet
         if (direction.x === 0 && direction.y === 0) return prevSnake
 
         const head = {
@@ -108,14 +104,12 @@ function Snake() {
           y: prevSnake[0].y + direction.y
         }
 
-        // Wall collision
         if (head.x < 0 || head.x >= GRID_SIZE || head.y < 0 || head.y >= GRID_SIZE) {
           setGameOver(true)
           setIsPlaying(false)
           return prevSnake
         }
 
-        // Self collision (skip head which is at index 0)
         for (let i = 1; i < prevSnake.length; i++) {
           if (prevSnake[i].x === head.x && prevSnake[i].y === head.y) {
             setGameOver(true)
@@ -126,7 +120,6 @@ function Snake() {
 
         const newSnake = [head, ...prevSnake]
 
-        // Food collision
         if (head.x === foodRef.current.x && head.y === foodRef.current.y) {
           setScore(prev => {
             const newScore = prev + 10
@@ -148,8 +141,48 @@ function Snake() {
     return () => clearInterval(gameLoop)
   }, [isPlaying, gameOver, generateFood, highScore])
 
+  const handleSwipe = useCallback((touchStartX, touchStartY, touchEndX, touchEndY) => {
+    if (!isPlaying || isPaused) return
+
+    const diffX = touchEndX - touchStartX
+    const diffY = touchEndY - touchStartY
+    const minSwipe = 30
+
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > minSwipe && directionRef.current.x !== -1) {
+        directionRef.current = { x: 1, y: 0 }
+      } else if (diffX < -minSwipe && directionRef.current.x !== 1) {
+        directionRef.current = { x: -1, y: 0 }
+      }
+    } else {
+      if (diffY > minSwipe && directionRef.current.y !== -1) {
+        directionRef.current = { x: 0, y: 1 }
+      } else if (diffY < -minSwipe && directionRef.current.y !== 1) {
+        directionRef.current = { x: 0, y: -1 }
+      }
+    }
+  }, [isPlaying, isPaused])
+
+  const touchStartRef = useRef({ x: 0, y: 0 })
+
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0]
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY }
+  }
+
+  const handleTouchEnd = (e) => {
+    if (!isPlaying) return
+    const touch = e.changedTouches[0]
+    handleSwipe(
+      touchStartRef.current.x,
+      touchStartRef.current.y,
+      touch.clientX,
+      touch.clientY
+    )
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 flex flex-col items-center">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white p-4 sm:p-8 flex flex-col items-center">
       <Link to="/" className="self-start text-gray-400 hover:text-white mb-4">
         ← Back to Dashboard
       </Link>
@@ -170,7 +203,7 @@ function Snake() {
       {!isPlaying ? (
         <div className="flex flex-col items-center gap-4 mt-8">
           {gameOver && <p className="text-red-400 text-xl mb-2">Game Over!</p>}
-          <p className="text-gray-400 mb-2">Use arrow keys to move, space to pause</p>
+          <p className="text-gray-400 mb-2">Arrow keys to move | Swipe on mobile</p>
           <button
             onClick={startGame}
             className="bg-green-600 hover:bg-green-500 px-8 py-3 rounded-lg font-semibold transition-colors text-lg"
@@ -188,11 +221,13 @@ function Snake() {
           )}
 
           <div
-            className="relative bg-gray-800 border-4 border-gray-600 rounded"
+            className="relative bg-gray-800 border-4 border-gray-600 rounded touch-none select-none"
             style={{
-              width: GRID_SIZE * CELL_SIZE,
-              height: GRID_SIZE * CELL_SIZE
+              width: CANVAS_SIZE,
+              height: CANVAS_SIZE
             }}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
           >
             {snake.map((segment, index) => (
               <div
@@ -217,7 +252,43 @@ function Snake() {
             />
           </div>
 
-          <div className="flex gap-4 mt-8">
+          {/* Touch D-pad for mobile */}
+          <div className="flex flex-col items-center mt-6 gap-2">
+            <button
+              onTouchStart={() => { if (directionRef.current.y !== 1) directionRef.current = { x: 0, y: -1 } }}
+              className="bg-blue-600 active:bg-blue-700 w-14 h-14 rounded-lg text-2xl font-bold flex items-center justify-center"
+            >
+              ↑
+            </button>
+            <div className="flex gap-2">
+              <button
+                onTouchStart={() => { if (directionRef.current.x !== 1) directionRef.current = { x: -1, y: 0 } }}
+                className="bg-blue-600 active:bg-blue-700 w-14 h-14 rounded-lg text-2xl font-bold flex items-center justify-center"
+              >
+                ←
+              </button>
+              <button
+                onTouchStart={() => { setIsPaused(prev => !prev) }}
+                className="bg-gray-600 active:bg-gray-700 w-14 h-14 rounded-lg text-xl font-bold flex items-center justify-center"
+              >
+                ⏸
+              </button>
+              <button
+                onTouchStart={() => { if (directionRef.current.x !== -1) directionRef.current = { x: 1, y: 0 } }}
+                className="bg-blue-600 active:bg-blue-700 w-14 h-14 rounded-lg text-2xl font-bold flex items-center justify-center"
+              >
+                →
+              </button>
+            </div>
+            <button
+              onTouchStart={() => { if (directionRef.current.y !== -1) directionRef.current = { x: 0, y: 1 } }}
+              className="bg-blue-600 active:bg-blue-700 w-14 h-14 rounded-lg text-2xl font-bold flex items-center justify-center"
+            >
+              ↓
+            </button>
+          </div>
+
+          <div className="flex gap-4 mt-4">
             <button
               onClick={() => { resetGame(); setIsPlaying(false) }}
               className="bg-gray-600 hover:bg-gray-500 px-6 py-3 rounded-lg font-semibold transition-colors"

@@ -2,26 +2,104 @@ import { Link } from 'react-router-dom'
 
 const gameCategories = [
   {
-    category: 'Strategy',
-    emoji: '♟️',
+    category: 'Puzzle',
+    emoji: '🧩',
     games: [
       {
-        id: 'chess',
-        name: 'Chess',
-        description: 'Classic turn-based strategy board game',
-        emoji: '♔'
-      },
-      {
-        id: 'checkers',
-        name: 'Checkers',
-        description: 'Classic jump and capture board game',
-        emoji: '⭕'
+        id: '2048',
+        name: '2048',
+        description: 'Combine tiles to reach 2048!',
+        emoji: '🔢'
       },
       {
         id: 'sudoku',
         name: 'Sudoku',
         description: 'Fill the grid with numbers 1-9',
+        emoji: '📊'
+      },
+      {
+        id: 'slidingpuzzle',
+        name: 'Sliding Puzzle',
+        description: 'Slide tiles to arrange numbers 1-15!',
         emoji: '🧩'
+      },
+      {
+        id: 'minesweeper',
+        name: 'Minesweeper',
+        description: 'Find all mines without hitting them!',
+        emoji: '💣'
+      },
+      {
+        id: 'wordle',
+        name: 'Wordle',
+        description: 'Guess the 5-letter word!',
+        emoji: '🔤'
+      },
+      {
+        id: 'bejeweled',
+        name: 'Bejeweled',
+        description: 'Match 3 gems to score!',
+        emoji: '💎'
+      },
+      {
+        id: 'jigsawpuzzle',
+        name: 'Jigsaw Puzzle',
+        description: 'Solve the picture puzzle!',
+        emoji: '🧩'
+      }
+    ]
+  },
+  {
+    category: 'Arcade',
+    emoji: '🕹️',
+    games: [
+      {
+        id: 'snake',
+        name: 'Snake',
+        description: 'Eat and grow, avoid the walls!',
+        emoji: '🐍'
+      },
+      {
+        id: 'pong',
+        name: 'Pong',
+        description: 'Classic arcade paddle game!',
+        emoji: '🏓'
+      },
+      {
+        id: 'tetris',
+        name: 'Tetris',
+        description: 'Stack blocks and clear lines!',
+        emoji: '🧱'
+      },
+      {
+        id: 'breakout',
+        name: 'Breakout',
+        description: 'Break all bricks with the ball!',
+        emoji: '🏗️'
+      },
+      {
+        id: 'spaceinvaders',
+        name: 'Space Invaders',
+        description: 'Destroy alien invaders from space!',
+        emoji: '👾'
+      },
+      {
+        id: 'flappybird',
+        name: 'Flappy Bird',
+        description: 'Flap and fly through the pipes!',
+        emoji: '🐦'
+      },
+      {
+        id: 'tabletennis',
+        name: 'Table Tennis',
+        description: 'Classic ping pong arcade game!',
+        emoji: '🏓'
+      },
+      {
+        id: 'pacman',
+        name: 'Pac-Man',
+        description: 'Eat dots, avoid ghosts!',
+        emoji: '👻'
       }
     ]
   },
@@ -50,26 +128,20 @@ const gameCategories = [
     ]
   },
   {
-    category: 'Arcade',
-    emoji: '🕹️',
+    category: 'Strategy',
+    emoji: '♟️',
     games: [
       {
-        id: 'snake',
-        name: 'Snake',
-        description: 'Eat and grow, avoid the walls!',
-        emoji: '🐍'
+        id: 'chess',
+        name: 'Chess',
+        description: 'Classic turn-based strategy board game',
+        emoji: '♔'
       },
       {
-        id: 'pong',
-        name: 'Pong',
-        description: 'Classic arcade paddle game!',
-        emoji: '🏓'
-      },
-      {
-        id: 'tetris',
-        name: 'Tetris',
-        description: 'Stack blocks and clear lines!',
-        emoji: '🧱'
+        id: 'checkers',
+        name: 'Checkers',
+        description: 'Classic jump and capture board game',
+        emoji: '⭕'
       }
     ]
   },
