@@ -1,0 +1,96 @@
+Berikut rekomendasi stack dan game untuk kumpulan game berbasis website:
+
+    Stack yang Cocok
+
+    ┌────────────────────┬───────────────────────────────────────────────────┐
+    │       Layer        │                      Pilihan                      │
+    ├────────────────────┼───────────────────────────────────────────────────┤
+    │ Frontend           │ React, Vue, atau vanilla HTML/CSS/JS              │
+    ├────────────────────┼───────────────────────────────────────────────────┤
+    │ Styling            │ Tailwind CSS                                      │
+    ├────────────────────┼───────────────────────────────────────────────────┤
+    │ Backend (opsional) │ Node.js + WebSocket (untuk multiplayer real-time) │
+    ├────────────────────┼───────────────────────────────────────────────────┤
+    │ State Management   │ React Hooks / Context API                         │
+    ├────────────────────┼───────────────────────────────────────────────────┤
+    │ Hosting            │ Vercel, Netlify, atau GitHub Pages                │
+    └────────────────────┴───────────────────────────────────────────────────┘
+
+    Untuk game sederhana (single player / local multiplayer) seperti Tic-Tac-Toe, cukup HTML + CSS + JavaScript vanilla
+    sudah lebih dari cukup.
+
+    ---
+    Game yang Bisa Dimasukkan
+
+    Klasik:
+    - Tic-Tac-Toe
+    - Connect Four
+    - Snake
+    - Pong
+    - Simon Says
+    - Memory Match ( kartu )
+
+    Strategi:
+    - Chess (catur)
+    - Checkers (dam)
+    - Sudoku
+
+    Puzzle:
+    - 2048
+    - Sliding Puzzle
+    - Tetris
+    - Minesweeper
+
+    Arcade:
+    - Breakout
+    - Space Invaders sederhana
+    - Flappy Bird clone
+
+    Multiplayer (dengan WebSocket):
+    - Tic-Tac-Toe online
+    - Poker (Texas Hold'em ringan)
+    - Drawing & Guessing (sketchful style)
+
+    ---
+    Saran Roadmap
+
+    1. Mulai dari vanilla (Tic-Tac-Toe, Memory Match, Snake) untuk belajar dasar
+    2. Tambah React/Vue saat mulai butuh state management kompleks
+    3. Tambah multiplayer dengan WebSocket/Socket.io untuk game yang lebih seru
+    4. Gunakan monorepo (misal Vite + workspace) agar semua game dalam 1 project
+
+    Mau saya mulai bantu buatkan salah satu game-nya?
+
+
+
+
+
+
+Berdasarkan game yang sudah ada, beberapa ide yang bisa ditambahkan:
+
+    Puzzle:
+    - Wordle/Word Search - tebak kata
+    - Bejeweled/Candy Crush - match-3 puzzle
+    - Jigsaw Puzzle - geser pieces gambar
+
+    Arcade:
+    - Asteroids - spaceship menembak asteroid
+    - Pac-Man style - maze chase game
+    - Frogger - lindungi katak menyeberang jalan
+
+    Card/Board:
+    - Solitaire/Klondike - kartu solitaire
+    - UNO - kartu berwarna
+    - Ludo - board game dadu
+
+    Casual:
+    - Darts - lempar panah ke target
+    - Bowling - gelindingkan bola
+    - Basketball - lempar bola ke ring
+    - Whack-a-Mole - ketuk tikus yang muncul
+
+    Sports:
+    - Table Tennis - ping pong sederhana
+    - Mini Golf - golf 2D
+
+    Game mana yang kamu mau saya tambahkan?
